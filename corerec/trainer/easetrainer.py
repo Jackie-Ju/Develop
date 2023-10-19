@@ -1,21 +1,13 @@
-import copy
-import time
 import numpy as np
-from tqdm import tqdm
-import os
 import torch
-from logging import getLogger
-from corerec.utils.early_stopping import EarlyStopping
-from corerec.evaluator.evaluator import Collector, Evaluator, Recommender
-from corerec.utils.utils import set_color, generate_train_loss_output, get_gpu_usage
 from corerec.trainer.trainer import GeneralTrainer
 
-class ItemKNNTrainer(GeneralTrainer):
+class EASETrainer(GeneralTrainer):
 
     def __init__(self, model, dataset,
                  train_loader, valid_loader, test_loader,
                  loss_fn, optimizer, scheduler, args):
-        super(ItemKNNTrainer, self).__init__(model, dataset,
+        super(EASETrainer, self).__init__(model, dataset,
                                              train_loader, valid_loader, test_loader, args)
         self.loss = loss_fn
         self.optimizer = optimizer

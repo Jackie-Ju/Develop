@@ -158,27 +158,31 @@ class LightGCN(nn.Module):
             user_e = self.full_user_embeddings[user]
         else:
             user_e = self._get_user_embedding(user)
-        all_item_e = self._all_item_embedding()
+        all_item_e = self.get_all_item_embeddings()
         score = torch.matmul(user_e, all_item_e.transpose(0, 1))
         return score
 
     def build_user_embeddings(self):
         self.restore_embeddings()
         if self.core_train:
-            built_embeds = torch.matmul(self.sim_mat, self._all_user_embedding())
-            all_u_embeds = torch.vstack((self._all_user_embedding(), built_embeds))
+            built_embeds = torch.matmul(self.sim_mat, self.get_all_user_embeddings())
+            all_u_embeds = torch.vstack((self.get_all_user_embeddings(), built_embeds))
             self.full_user_embeddings = all_u_embeds[self.user_id_for_embed_construction]
         else:
             pass
 
     def _get_user_embedding(self, user):
+        self.restore_embeddings()
         return self.restore_user_e[user]
 
     def _get_item_embedding(self, item):
+        self.restore_embeddings()
         return self.restore_item_e[item]
 
-    def _all_user_embedding(self):
+    def get_all_user_embeddings(self):
+        self.restore_embeddings()
         return self.restore_user_e
 
-    def _all_item_embedding(self):
+    def get_all_item_embeddings(self):
+        self.restore_embeddings()
         return self.restore_item_e

@@ -6,6 +6,7 @@ from corerec.utils.utils import list_batch_collate
 import corerec.model
 import corerec.utils.loss
 import corerec.trainer
+import corerec.core
 
 def create_dataloader(dataset, config):
     trn_batch_size = config.dataloader.batch_size
@@ -61,6 +62,9 @@ def loss_function(config):
         criterion: The desired loss function specified in config.
 
     """
+    if config.loss.type is None:
+        return None
+
     loss_dict = {}
     loss_class = inspect.getmembers(
         sys.modules['corerec.utils.loss'], lambda x: inspect.isclass(x) and x.__module__ == 'corerec.utils.loss'
@@ -137,3 +141,63 @@ def create_trainer(model, dataset,
     )
 
     return trainer
+
+
+def create_selection_trainer(model, dataset,
+                   trainloader, valloader, testloader,
+                   criterion, optimizer, scheduler, config, strategy
+                   ):
+    r"""Loop through all the trainers implemented in the trainer package.
+
+        Args:
+            model: The RS model.
+
+        Returns:
+            trainer: The trainer corresponding to the RS model.
+
+        """
+
+    trainer_dict = {}
+    trainer_class = inspect.getmembers(
+        sys.modules['corerec.trainer'], lambda x: inspect.isclass(x)
+    )
+    for trainer_name, trainer in trainer_class:
+        trainer_dict[trainer_name] = trainer
+
+    desired_trainer = f"{model.__class__.__name__}SelectionTrainer"
+    if desired_trainer not in trainer_dict.keys():
+        raise NotImplementedError("The specified trainer is not implemented.")
+
+    trainer = trainer_dict[desired_trainer](
+        model=model,
+        dataset=dataset,
+        train_loader=trainloader,
+        valid_loader=valloader,
+        test_loader=testloader,
+        loss_fn=criterion,
+        optimizer=optimizer,
+        scheduler=scheduler,
+        args=config,
+        strategy=strategy
+    )
+
+    return trainer
+
+def create_strategy(dataset, model, config):
+    strategy_dict = {}
+    strategy_class = inspect.getmembers(
+        sys.modules['corerec.core'], lambda x : inspect.isclass(x)
+    )
+
+    for strategy_name, strategy in strategy_class:
+        strategy_dict[strategy_name] = strategy
+    if config.dss_args.method not in strategy_dict.keys():
+        raise NotImplementedError("The specified coreset strategy is not implemented.")
+
+    strategy = strategy_dict[config.dss_args.method](
+        dataset=dataset,
+        model=model,
+        args=config
+
+    )
+    return strategy

@@ -15,21 +15,18 @@ class MultiVAETrainer(GeneralTrainer):
         self.scheduler = scheduler
         self.train_data_idx_dict = self.dataset.history_dict
 
-    def _batch_train(self, iter_data):
-        accumulated_loss = 0
-        for b_id, batch in enumerate(iter_data):
-            for key in batch.keys():
-                batch[key] = batch[key].to(self.args.train_args.device)
-            self.optimizer.zero_grad()
-            outputs, mu, logvar, targets = self.model(batch)
-            loss = self.loss(outputs, mu, logvar, targets)
-            loss.backward()
-            self.optimizer.step()
+    def _batch_train(self, batch):
+        for key in batch.keys():
+            batch[key] = batch[key].to(self.args.train_args.device)
+        self.optimizer.zero_grad()
+        outputs, mu, logvar, targets = self.model(batch)
+        loss = self.loss(outputs, mu, logvar, targets)
+        loss.backward()
+        self.optimizer.step()
 
-            if self.scheduler is not None:
-                self.scheduler.step()
-            accumulated_loss += loss.item()
-        return accumulated_loss
+        if self.scheduler is not None:
+            self.scheduler.step()
+        return loss
 
     def _full_batch_eval(self, bid, batch_data, isTest):
         offset = bid * self.args.dataloader.batch_size

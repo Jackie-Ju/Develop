@@ -17,6 +17,7 @@ class DataMultiVAE(BasicDataset):
         self.test_profile = np.zeros(len(self.all_users), dtype=np.int)
         self._build_history()
         if self.core_users is not None:
+            self._core_uid()
             self.train_df = self.train_df.loc[self.train_df.userId.isin(self.core_users)]
         self.train_users = sorted(self.train_df.uid.unique())
 
@@ -45,6 +46,9 @@ class DataMultiVAE(BasicDataset):
             if key not in self.test_items.keys():
                 self.test_items[key] = []
             self.test_items[key].extend(pdf.iid.values)
+
+    def _core_uid(self):
+        self.core_uid = [self.user_uid_map[raw_id] for raw_id in self.core_users]
 
     def __getitem__(self, index):
         if self.flag == 'train':

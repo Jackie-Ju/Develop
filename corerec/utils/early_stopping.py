@@ -15,7 +15,7 @@ class EarlyStopping:
         # self.save_name = os.path.join(self.save_root,
         #                               f"{self.args.method_type}/{self.args.method_type}-{self.args.model.architecture}-" \
         #                               f"{self.args.dataset.name}-{self.args.core_args.fraction}.pth")
-        self.save_name = args.core_args.model_dict_path
+        self.save_name = args.eval_args.model_dict_path
 
         self.patience = patience
         self.verbose = args.verbose

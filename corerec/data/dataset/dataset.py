@@ -101,6 +101,7 @@ class BasicDataset(Dataset):
         self.dataset['simiid'] = simiid_list
 
     def _build_sparse_matrix(self, dataset=None, form='coo', explicit=False, shape=None, core=True):
+        self.logger.info(set_color("Building sparse interaction matrix...", "blue"))
         if not core:
             index_u = dataset['uid'].values
         else:

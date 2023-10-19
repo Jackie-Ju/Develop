@@ -5,3 +5,4 @@ from .bpr import *
 from .lightgcn import *
 from .itemknn import *
 from .ease import *
+from .specwalk import *
