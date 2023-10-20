@@ -19,12 +19,14 @@ pip install -r requirements.txt
 
 ```bash
 python recommender_run.py --method=Full --model=ease\
-                          --dataset=ml100k --device=cuda:0 --batch_size=512 --epochs=200 --seed=2020
+                          --dataset=ml100k --device=cuda:0\
+                          --batch_size=512 --epochs=200 --seed=2020
 ```
 ### Run with coreset
 ```bash
 python recommender_run.py --method=KCore --coreset_path=KCore_repeat1_0.5\
-                          --model=ease --dataset=ml100k --device=cuda:0 --batch_size=512 --epochs=200
+                          --model=ease --dataset=ml100k --device=cuda:0\
+                          --batch_size=512 --epochs=200
 ```
 See completed configurations in [recsys_parser.py](reccore/utils/recsys_parser.py).
 
@@ -33,6 +35,7 @@ Below is an example of selecting a coreset of 10% of users from ml100k using Her
 
 ```bash
 python selection_run.py --coreset_size=0.1 --method=herding\
-                        --model=bpr --dataset=ml100k --device=cuda:0 --batch_size=512 --epochs=200 --seed=2020
+                        --model=bpr --dataset=ml100k --device=cuda:0\
+                        --batch_size=512 --epochs=200 --seed=2020
 ```
 See completed configurations in [selection_parser.py](reccore/utils/selection_parser.py)
