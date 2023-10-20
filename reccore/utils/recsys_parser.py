@@ -1,8 +1,8 @@
 import pandas as pd
 import argparse
 import os.path
-from corerec.config.config_utils import load_config_data
-from corerec.utils.utils import ensure_dir
+from reccore.config.config_utils import load_config_data
+from reccore.utils.utils import ensure_dir
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Parameter Processing')
@@ -29,8 +29,8 @@ def parse_args():
 
 
 args = parse_args()
-global_path = 'corerec/config/recsys_global_config.py'
-config_file = f'corerec/config/models/{args.model.strip()}_config.py'
+global_path = 'reccore/config/recsys_global_config.py'
+config_file = f'reccore/config/models/{args.model.strip()}_config.py'
 cfg = load_config_data(global_path, config_file)
 cfg.train_args.device = args.device.strip()
 cfg.core_args.method = args.method.strip()

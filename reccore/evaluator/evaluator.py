@@ -2,8 +2,8 @@ import numpy as np
 import torch
 import inspect
 import sys
-from corerec.evaluator import metrics
-from corerec.utils.utils import update_dict
+from reccore.evaluator import metrics
+from reccore.utils.utils import update_dict
 from time import time
 
 
@@ -52,7 +52,7 @@ class Evaluator(object):
     def __init__(self, topk_mat_with_pos_item_len, metrics, top_k, coreset_indices):
         self.topk_mat_with_pos_item_len = topk_mat_with_pos_item_len
         self.metrics = metrics
-        self.metric_module_name = 'corerec.evaluator.metrics'
+        self.metric_module_name = 'reccore.evaluator.metrics'
         self.top_k = top_k
         self.coreset_indices = coreset_indices
 

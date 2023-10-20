@@ -2,7 +2,7 @@ import numpy as np
 from scipy.linalg import svd
 from gensim.models import Word2Vec
 from logging import getLogger
-from corerec.utils.utils import set_color
+from reccore.utils.utils import set_color
 from tqdm import tqdm
 
 class SpecWalk(object):

@@ -1,9 +1,9 @@
 from logging import getLogger
-from corerec.utils import selection_parser
-from corerec.utils.logger import init_logger
-from corerec.data.data_utils import gen_dataset
-from corerec.utils.utils import set_color, setup_seed
-from corerec.utils.initializer import create_dataloader, create_model, create_strategy,\
+from reccore.utils import selection_parser
+from reccore.utils.logger import init_logger
+from reccore.data.data_utils import gen_dataset
+from reccore.utils.utils import set_color, setup_seed
+from reccore.utils.initializer import create_dataloader, create_model, create_strategy,\
     create_selection_trainer, loss_function, optimizer_with_scheduler
 
 if __name__ == '__main__':

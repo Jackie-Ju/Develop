@@ -1,34 +1,32 @@
 import numpy as np
 from tqdm import tqdm
-from corerec.data.dataset.dataset import BasicDataset
+from reccore.data.dataset.dataset import BasicDataset
 from reccore.utils.utils import set_color
+from copy import deepcopy
 tqdm.pandas()
 
-class DataItemKNN(BasicDataset):
+
+class DataMultiVAE(BasicDataset):
     def __init__(self, config=None):
-        super(DataItemKNN, self).__init__(config)
+        super(DataMultiVAE, self).__init__(config)
+
         self._load_data()
-        if self.core_users is not None:
-            self._build_core_user_item_map()
         self._user_based_split()
-        self.full_interaction_matrix = self._build_sparse_matrix(self.train_df, 'csr',
-                                                                 shape=(self.user_num, self.item_num),
-                                                                 core=False
-                                                                 ).astype(np.float32)
-        self.users = sorted(self.dataset.uid.unique())
-        self.valid_profile = np.zeros(len(self.users), dtype=np.int)
-        self.test_profile = np.zeros(len(self.users), dtype=np.int)
+        self.all_users = sorted(self.dataset.uid.unique())
+        self.valid_profile = np.zeros(len(self.all_users), dtype=np.int)
+        self.test_profile = np.zeros(len(self.all_users), dtype=np.int)
         self._build_history()
         if self.core_users is not None:
+            self._core_uid()
             self.train_df = self.train_df.loc[self.train_df.userId.isin(self.core_users)]
-            self.train_interaction_matrix = self._build_sparse_matrix(self.train_df, 'csr',
-                                                                      shape=(self.train_df.uid.nunique(), self.item_num)
-                                                                      ).astype(np.float32)
+        self.train_users = sorted(self.train_df.uid.unique())
+
 
     def _build_history(self):
         self.logger.info(set_color("Building user interaction history...", "blue"))
         for uid, pdf in tqdm(self.train_df.groupby("uid"), total=self.user_num, desc=set_color(f"Train items", "pink")):
             key = int(uid)
+            # self.len_profile[uid] = len(pdf.iid.values)
             if key not in self.history_dict.keys():
                 self.history_dict[key] = []
                 self.history_value_dict[key] = []
@@ -49,22 +47,28 @@ class DataItemKNN(BasicDataset):
                 self.test_items[key] = []
             self.test_items[key].extend(pdf.iid.values)
 
+    def _core_uid(self):
+        self.core_uid = [self.user_uid_map[raw_id] for raw_id in self.core_users]
+
     def __getitem__(self, index):
         if self.flag == 'train':
-            return {"userId": self.train_df.uid.values[index]}
+            batch_data = self.train_users[index]
+            return {"userId": batch_data}
         elif self.flag == 'valid':
-            batch_data = self.users[index]
+            batch_data = self.all_users[index]
             return {"userId": batch_data,
                     "indices": ([batch_data]*self.valid_profile[batch_data], self.valid_items[batch_data])}
         else:
-            batch_data = self.users[index]
+            batch_data = self.all_users[index]
             return {"userId": batch_data,
                     "indices": ([batch_data]*self.test_profile[batch_data], self.test_items[batch_data])}
 
     def __len__(self):
         if self.flag == 'train':
-            return len(self.train_df)
+            return self.train_df.uid.nunique()
         elif self.flag == 'valid':
             return self.valid_df.uid.nunique()
         else:
             return self.test_df.uid.nunique()
+
+

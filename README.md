@@ -35,4 +35,4 @@ Below is an example of selecting a coreset of 10% of users from ml100k using Her
 python selection_run.py --coreset_size=0.1 --method=herding\
                         --model=bpr --dataset=ml100k --device=cuda:0 --batch_size=512 --epochs=200 --seed=2020
 ```
-See completed configurations in [selection_parser.py](corerec/utils/selection_parser.py)
+See completed configurations in [selection_parser.py](reccore/utils/selection_parser.py)

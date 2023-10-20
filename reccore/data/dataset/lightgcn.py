@@ -1,11 +1,11 @@
 from tqdm import tqdm
 import numpy as np
-from corerec.data.dataset.dataset import BasicDataset
+from reccore.data.dataset.dataset import BasicDataset
 tqdm.pandas()
 
-class DataBPR(BasicDataset):
+class DataLightGCN(BasicDataset):
     def __init__(self, config=None):
-        super(DataBPR, self).__init__(config)
+        super(DataLightGCN, self).__init__(config)
         self._load_data()
         if self.core_users is not None:
             self._build_core_user_item_map()
@@ -27,15 +27,6 @@ class DataBPR(BasicDataset):
                     "itemId": self.train_triplet[index][1],
                     "neg_itemId": self.train_triplet[index][2]}
 
-            # sample a negative for each pos item when fetching
-            # user_id = self.train_tuple[index][0]
-            # pos_item = self.train_tuple[index][1]
-            # neg_item = np.random.choice(self.neg_pool[user_id])
-            # return {"userId": user_id,
-            #         "itemId": pos_item,
-            #         "neg_itemId": neg_item}
-
-            # return index
         elif self.flag == 'valid':
             batch_data = self.users[index]
             return {"userId": batch_data,
@@ -52,4 +43,6 @@ class DataBPR(BasicDataset):
             return self.valid_df.uid.nunique()
         else:
             return self.test_df.uid.nunique()
+
+
 

@@ -3,7 +3,7 @@ import scipy.sparse as sp
 import torch
 import torch.nn as nn
 
-from corerec.model.init import xavier_uniform_initialization
+from reccore.model.init import xavier_uniform_initialization
 
 def softmax(x):
     """Compute softmax values for each sets of scores in x."""

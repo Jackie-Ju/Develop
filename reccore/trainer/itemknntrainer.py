@@ -5,10 +5,10 @@ from tqdm import tqdm
 import os
 import torch
 from logging import getLogger
-from corerec.utils.early_stopping import EarlyStopping
-from corerec.evaluator.evaluator import Collector, Evaluator, Recommender
-from corerec.utils.utils import set_color, generate_train_loss_output, get_gpu_usage
-from corerec.trainer.trainer import GeneralTrainer
+from reccore.utils.early_stopping import EarlyStopping
+from reccore.evaluator.evaluator import Collector, Evaluator, Recommender
+from reccore.utils.utils import set_color, generate_train_loss_output, get_gpu_usage
+from reccore.trainer.trainer import GeneralTrainer
 
 class ItemKNNTrainer(GeneralTrainer):
 

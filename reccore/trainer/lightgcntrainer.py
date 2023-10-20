@@ -1,24 +1,16 @@
-import copy
-import time
 import numpy as np
-from tqdm import tqdm
-import os
 import torch
-from logging import getLogger
-from corerec.utils.early_stopping import EarlyStopping
-from corerec.evaluator.evaluator import Collector, Evaluator, Recommender
-from corerec.utils.utils import set_color, generate_train_loss_output, get_gpu_usage
-from corerec.trainer.trainer import GeneralTrainer, GeneralSelectionTrainer
+from reccore.trainer.trainer import GeneralTrainer, GeneralSelectionTrainer
 
-class BPRTrainer(GeneralTrainer):
+class LightGCNTrainer(GeneralTrainer):
 
     def __init__(self, model, dataset,
                  train_loader, valid_loader, test_loader,
                  loss_fn, optimizer, scheduler, args):
-        super(BPRTrainer, self).__init__(model, dataset,
-                                         train_loader, valid_loader, test_loader, args)
-        self.optimizer = optimizer
+        super(LightGCNTrainer, self).__init__(model, dataset,
+                                              train_loader, valid_loader, test_loader, args)
         self.loss = loss_fn
+        self.optimizer = optimizer
         self.scheduler = scheduler
         self.train_data_idx_dict = self.dataset.history_dict
 
@@ -26,8 +18,8 @@ class BPRTrainer(GeneralTrainer):
         for key in batch.keys():
             batch[key] = batch[key].to(self.args.train_args.device)
         self.optimizer.zero_grad()
-        pos_score, neg_score = self.model.forward(batch)
-        loss = self.loss(pos_score, neg_score)
+        pos_score, neg_score, ego_embeddings = self.model.forward(batch)
+        loss = self.loss(pos_score, neg_score, ego_embeddings)
         loss.backward()
         self.optimizer.step()
 
@@ -49,22 +41,21 @@ class BPRTrainer(GeneralTrainer):
         for row in range(len(unique_users)):
             u_id = unique_users[row].item()
             scores[row][self.dataset.history_dict[u_id]] = -np.inf
-
         if isTest:
             self.score_mat.append(scores)
 
         return positive_u, items, scores, unique_users
 
-class BPRSelectionTrainer(GeneralSelectionTrainer):
+class LightGCNSelectionTrainer(GeneralSelectionTrainer):
 
     def __init__(self, model, dataset,
                  train_loader, valid_loader, test_loader,
                  loss_fn, optimizer, scheduler, args, strategy):
-        super(BPRSelectionTrainer, self).__init__(model, dataset,
-                                                  train_loader, valid_loader, test_loader,
-                                                  args, strategy)
-        self.optimizer = optimizer
+        super(LightGCNSelectionTrainer, self).__init__(model, dataset,
+                                                       train_loader, valid_loader, test_loader,
+                                                       args, strategy)
         self.loss = loss_fn
+        self.optimizer = optimizer
         self.scheduler = scheduler
         self.train_data_idx_dict = self.dataset.history_dict
 
@@ -72,8 +63,8 @@ class BPRSelectionTrainer(GeneralSelectionTrainer):
         for key in batch.keys():
             batch[key] = batch[key].to(self.args.train_args.device)
         self.optimizer.zero_grad()
-        pos_score, neg_score = self.model.forward(batch)
-        loss = self.loss(pos_score, neg_score)
+        pos_score, neg_score, ego_embeddings = self.model.forward(batch)
+        loss = self.loss(pos_score, neg_score, ego_embeddings)
         loss.backward()
         self.optimizer.step()
 
@@ -95,7 +86,6 @@ class BPRSelectionTrainer(GeneralSelectionTrainer):
         for row in range(len(unique_users)):
             u_id = unique_users[row].item()
             scores[row][self.dataset.history_dict[u_id]] = -np.inf
-
         if isTest:
             self.score_mat.append(scores)
 

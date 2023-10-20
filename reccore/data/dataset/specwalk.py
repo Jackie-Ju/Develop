@@ -1,7 +1,7 @@
 import numpy as np
 import networkx as nx
 from tqdm import tqdm
-from corerec.data.dataset.dataset import BasicDataset
+from reccore.data.dataset.dataset import BasicDataset
 from reccore.utils.utils import set_color
 tqdm.pandas()
 

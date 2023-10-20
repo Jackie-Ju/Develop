@@ -2,11 +2,11 @@ import inspect
 import sys
 import torch
 import torch.optim as optim
-from corerec.utils.utils import list_batch_collate
-import corerec.model
-import corerec.utils.loss
-import corerec.trainer
-import corerec.core
+from reccore.utils.utils import list_batch_collate
+import reccore.model
+import reccore.utils.loss
+import reccore.trainer
+import reccore.core
 
 def create_dataloader(dataset, config):
     trn_batch_size = config.dataloader.batch_size
@@ -39,7 +39,7 @@ def create_model(dataset, config):
 
     model_dict = {}
     model_class = inspect.getmembers(
-        sys.modules['corerec.model'], lambda x: inspect.isclass(x)
+        sys.modules['reccore.model'], lambda x: inspect.isclass(x)
     )
     for model_name, model in model_class:
         model_dict[model_name] = model
@@ -67,7 +67,7 @@ def loss_function(config):
 
     loss_dict = {}
     loss_class = inspect.getmembers(
-        sys.modules['corerec.utils.loss'], lambda x: inspect.isclass(x) and x.__module__ == 'corerec.utils.loss'
+        sys.modules['reccore.utils.loss'], lambda x: inspect.isclass(x) and x.__module__ == 'reccore.utils.loss'
     )
     for loss_name, loss in loss_class:
         loss_dict[loss_name] = loss
@@ -119,7 +119,7 @@ def create_trainer(model, dataset,
 
     trainer_dict = {}
     trainer_class = inspect.getmembers(
-        sys.modules['corerec.trainer'], lambda x: inspect.isclass(x)
+        sys.modules['reccore.trainer'], lambda x: inspect.isclass(x)
     )
     for trainer_name, trainer in trainer_class:
         trainer_dict[trainer_name] = trainer
@@ -159,7 +159,7 @@ def create_selection_trainer(model, dataset,
 
     trainer_dict = {}
     trainer_class = inspect.getmembers(
-        sys.modules['corerec.trainer'], lambda x: inspect.isclass(x)
+        sys.modules['reccore.trainer'], lambda x: inspect.isclass(x)
     )
     for trainer_name, trainer in trainer_class:
         trainer_dict[trainer_name] = trainer
@@ -186,7 +186,7 @@ def create_selection_trainer(model, dataset,
 def create_strategy(dataset, model, config):
     strategy_dict = {}
     strategy_class = inspect.getmembers(
-        sys.modules['corerec.core'], lambda x : inspect.isclass(x)
+        sys.modules['reccore.core'], lambda x : inspect.isclass(x)
     )
 
     for strategy_name, strategy in strategy_class:

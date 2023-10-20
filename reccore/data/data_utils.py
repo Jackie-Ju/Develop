@@ -1,4 +1,4 @@
-from corerec.data.dataset import *
+from reccore.data.dataset import *
 
 # from datasets import load_dataset
 

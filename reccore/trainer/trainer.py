@@ -5,9 +5,9 @@ import os
 import torch
 import copy
 from logging import getLogger
-from corerec.utils.early_stopping import EarlyStopping
-from corerec.evaluator.evaluator import Collector, Evaluator
-from corerec.utils.utils import set_color, generate_train_loss_output, get_gpu_usage
+from reccore.utils.early_stopping import EarlyStopping
+from reccore.evaluator.evaluator import Collector, Evaluator
+from reccore.utils.utils import set_color, generate_train_loss_output, get_gpu_usage
 
 class GeneralTrainer(object):
     r"""Trainer Class is used to manage the training and evaluation processes of recommender system models.

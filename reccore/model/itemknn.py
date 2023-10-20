@@ -2,7 +2,7 @@ import time
 
 import torch
 import torch.nn as nn
-from corerec.model.init import xavier_normal_initialization
+from reccore.model.init import xavier_normal_initialization
 
 import torch
 from torch import nn

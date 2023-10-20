@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import os
 from logging import getLogger
-from corerec.utils.utils import ensure_dir, set_color
+from reccore.utils.utils import ensure_dir, set_color
 
 
 class EarlyStopping:
