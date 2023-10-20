@@ -29,8 +29,8 @@ def parse_args():
 
 
 args = parse_args()
-global_path = '~/projects/Develop/corerec/config/recsys_global_config.py'
-config_file = f'~/projects/Develop/corerec/config/models/{args.model.strip()}_config.py'
+global_path = 'corerec/config/recsys_global_config.py'
+config_file = f'corerec/config/models/{args.model.strip()}_config.py'
 cfg = load_config_data(global_path, config_file)
 cfg.train_args.device = args.device.strip()
 cfg.core_args.method = args.method.strip()

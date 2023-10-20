@@ -27,9 +27,9 @@ def parse_args():
 
 
 args = parse_args()
-global_path = '~/projects/Develop/corerec/config/selection_global_config.py'
-model_config_file = f'~/projects/Develop/corerec/config/models/{args.model.strip()}_config.py'
-strategy_config_file = f'~/projects/Develop/corerec/config/strategies/{args.method.strip()}_config.py'
+global_path = 'corerec/config/selection_global_config.py'
+model_config_file = f'corerec/config/models/{args.model.strip()}_config.py'
+strategy_config_file = f'corerec/config/strategies/{args.method.strip()}_config.py'
 cfg = load_config_data(global_path, model_config_file, strategy_config_file)
 cfg.train_args.device = args.device.strip()
 cfg.dss_args.coreset_size = args.coreset_size
