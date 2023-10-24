@@ -10,7 +10,7 @@ class SpecWalkSelectionTrainer(GeneralSelectionTrainer):
         self.model = model
 
     def fit(self):
-        self.model.fit()
+        self.model.fit(epochs=self.args.dss_args.num_epoch)
         selected_idx = []
         if self.strategy is not None:
             self.strategy.after_train(self.model.state_dict())

@@ -129,14 +129,15 @@ class SpecWalk(nn.Module):
     #
     #     return walks
 
-    def fit(self):
+    def fit(self, epochs=5):
         if self.how == 'svd':
             self.user_embeddings = self.user_spec_embedding
         else:
             self.logger.info(set_color("Training node2vec...", "blue"))
             guided_node2vec = Word2Vec(self.walks, vector_size=self.feature_dim,
                                        window=5, min_count=0,
-                                       sg=1, workers=4, seed=self.random_seed)
+                                       sg=1, workers=4,
+                                       epochs=epochs, seed=self.random_seed)
 
             self.logger.info(set_color("Building user embeddings...", "blue"))
             user_graph_embeds = []
