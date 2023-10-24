@@ -3,7 +3,7 @@ import time
 import torch
 import numpy as np
 from .abstractstrategy import AbstractStrategy
-from reccore.selectionstrategies.helpers import OrthogonalMP_REG_Parallel, OrthogonalMP_REG, \
+from reccore.core.methods_utils.omp_solvers import OrthogonalMP_REG_Parallel, OrthogonalMP_REG, \
     OrthogonalMP_REG_Parallel_V1
 from torch.utils.data import Subset, DataLoader
 

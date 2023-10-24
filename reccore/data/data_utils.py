@@ -19,8 +19,11 @@ def gen_dataset(config):
     if model_name == 'LightGCN':
         dataset = DataLightGCN(config.dataset)
         return dataset
-    if model_name == 'ItemKNN' or 'EASE':
+    if model_name == 'ItemKNN' or model_name == 'EASE':
         dataset = DataItemKNN(config.dataset)
+        return dataset
+    if model_name == 'SpecWalk':
+        dataset = DataSpecWalk(config.dataset)
         return dataset
 
     else:

@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn.init import xavier_normal_, constant_
-from reccore.utils.models.layers import MLPLayers
+from reccore.model.layers import MLPLayers
 
 
 def xavier_normal_initialization(module):

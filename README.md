@@ -38,4 +38,4 @@ python selection_run.py --coreset_size=0.1 --method=herding\
                         --model=bpr --dataset=ml100k --device=cuda:0\
                         --batch_size=512 --epochs=200 --seed=2020
 ```
-See completed configurations in [selection_parser.py](reccore/utils/selection_parser.py)
+Currently, only BPR and LightGCN can work as the proxy model. Will later include MF and SpecWalk. See completed configurations in [selection_parser.py](reccore/utils/selection_parser.py)

@@ -8,19 +8,19 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Parameter Processing')
 
     parser.add_argument('--coreset_size', type=float, default=0.3, help="coreset size")
-    parser.add_argument('--method', type=str, default="facilitylocation", help="the method used to select coreset")
-    parser.add_argument('--model', type=str, default="bpr", help="the method used to select coreset")
+    parser.add_argument('--method', type=str, default="gsp", help="the method used to select coreset")
+    parser.add_argument('--model', type=str, default="specwalk", help="the method used to select coreset")
     parser.add_argument('--dataset', type=str, default="ml100k", help="the daraset to be selected")
     parser.add_argument('--setting', type=str, default="_debug",
                         help="post-fix of the method according to specific settings")
     parser.add_argument('--batch_size', type=int, default=512, help="the batch size")
-    parser.add_argument('--device', type=str, default="cuda:1", help="the device to use")
+    parser.add_argument('--device', type=str, default="cpu", help="the device to use")
     parser.add_argument('--epochs', type=int, default=5, help="number of training epochs")
     parser.add_argument('--T', type=int, default=200, help="scheduler")
     parser.add_argument('--lr', type=float, default=0.001, help="learning rate")
     parser.add_argument('--selection_type', type=str, default="user", help="select coreset on full users or on batches")
     parser.add_argument('--repeat', type=int, default=1, help="number of experiments")
-    parser.add_argument('--seed', type=int, default=None, help="the random seed")
+    parser.add_argument('--seed', type=int, default=2020, help="the random seed")
     parser.add_argument('--eval_every', type=int, default=1,
                         help="evaluating and logging the data every n epochs")
     return parser.parse_args()

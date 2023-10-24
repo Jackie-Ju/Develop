@@ -15,6 +15,8 @@ class DataSpecWalk(BasicDataset):
                                                          explicit=True,
                                                          shape=(self.user_num, self.item_num),
                                                          core=False)
+        self._uid_node_mapping()
+
     def _build_graph(self):
         self.logger.info(set_color("Building user item bipartite graph...", "blue"))
         G = nx.Graph()
@@ -33,23 +35,21 @@ class DataSpecWalk(BasicDataset):
 
     def __getitem__(self, index):
         if self.flag == 'train':
-            return {"userId": self.train_df.uid.values[index]}
+            return {"userId": 0}
         elif self.flag == 'valid':
-            batch_data = self.users[index]
-            return {"userId": batch_data,
-                    "indices": ([batch_data]*self.valid_profile[batch_data], self.valid_items[batch_data])}
+            return {"userId": 0,
+                    "indices": ([0]*1, [0]*1)}
         else:
-            batch_data = self.users[index]
-            return {"userId": batch_data,
-                    "indices": ([batch_data]*self.test_profile[batch_data], self.test_items[batch_data])}
+            return {"userId": 0,
+                    "indices": ([0]*1, [0]*1)}
 
     def __len__(self):
         if self.flag == 'train':
-            return len(self.train_df)
+            return 1
         elif self.flag == 'valid':
-            return self.valid_df.uid.nunique()
+            return 1
         else:
-            return self.test_df.uid.nunique()
+            return 1
 
     def get_uid_node_maps(self):
         return self.uid2node, self.node2uid

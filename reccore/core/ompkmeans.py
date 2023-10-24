@@ -5,7 +5,7 @@ import time
 import torch
 from sklearn.cluster import KMeans
 from .abstractstrategy import AbstractStrategy
-from reccore.selectionstrategies.helpers import OrthogonalMP_REG_Parallel, OrthogonalMP_REG, OrthogonalMP_REG_Parallel_V1
+from reccore.core.methods_utils.omp_solvers import OrthogonalMP_REG_Parallel, OrthogonalMP_REG, OrthogonalMP_REG_Parallel_V1
 import similaripy as sim
 
 

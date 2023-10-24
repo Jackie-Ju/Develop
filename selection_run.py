@@ -41,15 +41,15 @@ if __name__ == '__main__':
                  set_color("dataset: ", "red") + f"{config.dataset.name}" + "\t"+
                  set_color("seed: ", "red") + f"{config.dss_args.seed}")
     best_valid_result, selected_idx = trainer.fit()
-    test_result_all = trainer.evaluate(flag='test', eval_loader=test_loader, load_best_model=True, tqdm_dec="Test")
-    test_result = {'hit@20': test_result_all["full_user"]['hit@20'],
-                   'mrr@20': test_result_all["full_user"]['mrr@20'],
-                   'ndcg@20': test_result_all["full_user"]['ndcg@20'],
-                   'map@20': test_result_all["full_user"]['map@20'],
-                   'recall@20': test_result_all["full_user"]['recall@20'],
-                   'precision@20': test_result_all["full_user"]['precision@20']}
-    logger.info(set_color("Best valid result", "yellow") + f": {best_valid_result}")
-    logger.info(set_color("Test result", "yellow") + f": {test_result}")
+    # test_result_all = trainer.evaluate(flag='test', eval_loader=test_loader, load_best_model=True, tqdm_dec="Test")
+    # test_result = {'hit@20': test_result_all["full_user"]['hit@20'],
+    #                'mrr@20': test_result_all["full_user"]['mrr@20'],
+    #                'ndcg@20': test_result_all["full_user"]['ndcg@20'],
+    #                'map@20': test_result_all["full_user"]['map@20'],
+    #                'recall@20': test_result_all["full_user"]['recall@20'],
+    #                'precision@20': test_result_all["full_user"]['precision@20']}
+    # logger.info(set_color("Best valid result", "yellow") + f": {best_valid_result}")
+    # logger.info(set_color("Test result", "yellow") + f": {test_result}")
 
     print(len(selected_idx))
     print(selected_idx)
